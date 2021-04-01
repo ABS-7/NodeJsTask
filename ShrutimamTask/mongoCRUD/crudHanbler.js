@@ -1,1 +1,0 @@
-const rifle = require("./rifleSchema");
