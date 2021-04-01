@@ -1,5 +1,6 @@
 const express = require("express");
 const dotenv = require('dotenv');
+const crud = require("./crudHandler")
 
 // setting prt from env or manually
 dotenv.config();
@@ -7,11 +8,17 @@ const port = process.env.PORT || 3000;
 
 const app = express();
 
-app.set('view engine', 'ejs');
-
 app.get("/", (req, res) => {
-    res.send("root");
+    res.send("Welcome Home");
 });
+
+app.post("/create", (req, res) => {});
+
+app.get("/read", (req, res) => {});
+
+app.put("/update", (req, res) => {});
+
+app.post("/delete", (req, res) => {});
 
 const server = app.listen(port, (err) => {
     if (err) console.log(err)
