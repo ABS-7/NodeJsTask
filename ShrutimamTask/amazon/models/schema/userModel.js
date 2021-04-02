@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const timestamp = require('mongoose-timestamp-plugin');
 //const dotenv = require('dotenv');
 
 //dotenv.config();
@@ -8,7 +9,6 @@ const users = new mongoose.Schema({
     name: {
         type: String,
         required: true,
-        unique: true
     },
     email: {
         type: String,
@@ -25,7 +25,15 @@ const users = new mongoose.Schema({
         type: Boolean,
         default: true
     }
+}, { collection: "Users" });
+
+
+users.plugin(timestamp, {
+    createdName: 'created_at', // default: 'createdAt'
+    disableCreated: false, // Disables the logging of the creation date
 });
+
+
 
 const userModel = new mongoose.model("user", users);
 
