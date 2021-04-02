@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const timestamp = require('mongoose-timestamp-plugin');
+const timestamp = require('mongoose-timestamp');
 //const dotenv = require('dotenv');
 
 //dotenv.config();
@@ -14,12 +14,9 @@ const users = new mongoose.Schema({
         type: String,
         unique: true
     },
-    registrationDate: {
-        type: Date,
-        required: true
-    },
     password: {
-        type: String
+        type: String,
+        required: true
     },
     active: {
         type: Boolean,
@@ -29,12 +26,9 @@ const users = new mongoose.Schema({
 
 
 users.plugin(timestamp, {
-    createdName: 'created_at', // default: 'createdAt'
     disableCreated: false, // Disables the logging of the creation date
 });
 
-
-
-const userModel = new mongoose.model("user", users);
+const userModel = new mongoose.model("Users", users);
 
 module.exports = userModel;

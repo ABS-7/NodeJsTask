@@ -31,12 +31,10 @@ const products = new mongoose.Schema({
 
 
 products.plugin(timestamp, {
-    createdName: 'created_at', // default: 'createdAt'
-    updatedName: 'updated_at', // default: 'updatedAt'
     disableCreated: false, // Disables the logging of the creation date
     disableUpdated: false // Disabled the loggin of the modification date
 });
 
-const productModel = new mongoose.model("product", products);
+const productModel = new mongoose.model("Products", products);
 
 module.exports = productModel;

@@ -27,14 +27,13 @@ const purchases = new mongoose.Schema({
         type: Number,
         required: true
     },
-});
+}, { collection: "Purchases" });
 
 purchases.plugin(timestamp, {
-    createdName: 'created_at', // default: 'createdAt'
     disableCreated: false, // Disables the logging of the creation date
 });
 
 
-const purchaseModel = new mongoose.model("purchase", purchases);
+const purchaseModel = new mongoose.model("Purchases", purchases);
 
 module.exports = purchaseModel;
