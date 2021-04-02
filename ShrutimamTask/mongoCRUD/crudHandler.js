@@ -9,7 +9,6 @@ async function perform(action, data) {
 
     mongoose.connect(dbURL, { useNewUrlParser: true, useUnifiedTopology: true, 'useCreateIndex': true }, (err) => {
         if (err) console.log(err);
-        else console.log("database connect sucessfully...");
     });
 
     switch (action) {
@@ -27,6 +26,20 @@ async function perform(action, data) {
                 console.log(error);
             }
             break;
+        case "u":
+            try {
+                result = await rifle.updateMany(data.filter, { $set: data.updation });
+            } catch (error) {
+                console.log(error);
+            }
+            break;
+        case "d":
+            try {
+                result = await rifle.updateMany(data.filter, { $set: { active: false } });
+            } catch (error) {
+                console.log(error);
+            }
+            break;
         default:
             console.log("cannot match action");
     }
@@ -36,31 +49,3 @@ async function perform(action, data) {
 module.exports = {
     perform: perform
 }
-
-// module.exports = {
-//     perform: async(action, data) => {
-//         mongoose.connect(dbURL, { useNewUrlParser: true, useUnifiedTopology: true, 'useCreateIndex': true }, async(err) => {
-//             if (err) console.log(err);
-//             else console.log("database connect sucessfully...");
-
-//             // console.log("qqqqqqq");
-//             // let result = await trySwitch(action, data);
-//             // console.log("wwwwwww");
-//             switch (action) {
-//                 case "c":
-//                     try {
-//                         console.log("qqqqqqq");
-//                         result = await rifle.insertMany(data);
-//                         console.log("sdbfksb" + result);
-//                     } catch (error) {
-//                         console.log(error);
-//                     }
-//                     break;
-//                 default:
-//                     console.log("cannot match action");
-//             }
-//             console.log("end perform");
-//             return result;
-//         });
-//     }
-// };

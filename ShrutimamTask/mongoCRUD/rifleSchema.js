@@ -10,6 +10,7 @@ const rifle = new mongoose.Schema({
     name: {
         type: String,
         required: true,
+        unique: true
     },
     manufacturer: {
         type: String,
