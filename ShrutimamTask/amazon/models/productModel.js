@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const timestamp = require('mongoose-timestamp-plugin');
+const timestamp = require('mongoose-timestamp');
 //const dotenv = require('dotenv');
 
 //dotenv.config();
@@ -19,9 +19,9 @@ const products = new mongoose.Schema({
         ref: "Users",
         required: true
     },
-    quantity: {
-        type: Number,
-        required: true
+    purchased: {
+        type: Boolean,
+        default: false
     },
     active: {
         type: Boolean,

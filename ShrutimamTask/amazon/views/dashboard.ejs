@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        form {
+            display: inline-block;
+            margin-right: 100px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <%=email%>
+        <form action="/user/logout" method="GET">
+            <button type="submit">Logout</button>
+        </form>
+
+        <form action="/dashboard/addProduct" method="GET">
+            <input type="hidden" name="email" value="<%=email%>">
+            <button type="submit">Add</button>
+        </form>
+
+        <form action="/dashboard/editProduct" method="GET">
+            <input type="hidden" name="email" value="<%=email%>">
+            <button type="submit">Edit</button>
+        </form>
+
+        <hr>
+        <h1>Welcome in dashboard</h1>
+
+        <table>
+            <% for(let i=0; i < data.length; i++) { %>
+                <tr>
+                    <td>
+                        <%= data[i].name %>
+                    </td>
+                    <td>
+                        <%= data[i].price %>
+                    </td>
+                    <td>
+                        <form action="/dashboard/purchase" method="POST">
+                            <input type="hidden" name="productId" value="<%= data[i]._id %>">
+                            <input type="hidden" name="userEmail" value="<%= email %>">
+                            <input type="hidden" name="productName" value="<%= data[i].name %>">
+                            <input type="hidden" name="productPrice" value="<%= data[i].price %>">
+                            <button type="submit">BUY</button>
+                        </form>
+                    </td>
+                </tr>
+                <% } %>
+        </table>
+</body>
+
+</html>

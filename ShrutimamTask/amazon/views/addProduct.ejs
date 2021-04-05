@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <% if (message) { %>
+        <h2>
+            <%= message %>
+        </h2>
+        <% } %>
+
+            <form action="/dashboard/addProduct" method="POST">
+                <label for="productName">Name:</label>
+                <input type="text" id="productName" name="productName" required>
+
+                <label for="productPrice">Price:</label>
+                <input type="text" id="productPrice" name="productPrice" required>
+
+                <input type="hidden" name="userEmail" value="<%= email %>" required>
+
+                <button type="submit">ADD</button>
+            </form>
+</body>
+
+</html>

@@ -9,19 +9,28 @@
 </head>
 
 <body>
-    <form action="/user/login" method="POST">
+    <% if (message) { %>
+        <h2>
+            <%= message %>
+        </h2>
+        <% } %>
 
-        <label for="userEmail">Email:</label>
-        <input type="text" id="userEmail" name="userEmail">
+            <br>
+            <br>
 
-        <label for="userPassword">Password:</label>
-        <input type="text" id="userPassword" name="userPassword">
+            <form action="/user/login" method="POST">
 
-        <button type="submit">Login</button>
+                <label for="userEmail">Email:</label>
+                <input type="text" id="userEmail" name="userEmail" required>
 
-    </form>
+                <label for="userPassword">Password:</label>
+                <input type="text" id="userPassword" name="userPassword" required>
 
-    <a href="/user/registration">Register</a>
+                <button type="submit">Login</button>
+
+            </form>
+
+            <a href="/user/registration">Register</a>
 </body>
 
 </html>

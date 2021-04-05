@@ -1,29 +1,49 @@
 const express = require("express");
 const bodyParser = require('body-parser');
 const userController = require("../controllers/user");
+const querystring = require('querystring');
 
 let router = express.Router();
 
+//const urlencodedParser = router.use(bodyParser.urlencoded({ extended: true }));
+
+const urlencodedParser = bodyParser.urlencoded({ extended: true });
+
 router.use(express.json());
-router.use(bodyParser.urlencoded({ extended: true }));
 
 router.get("/registration", (req, res) => {
-    res.render("registration");
+    res.render("registration", { message: null });
 });
 
-router.post("/registration", async(req, res) => {
-    await userController.doRegistration(req.body);
-    res.render("login");
+router.post("/registration", urlencodedParser, async(req, res) => {
+    console.log('in post of registration');
+    const result = await userController.doRegistration(req.body);
+    if (result == "error") {
+        res.render("registration", { message: "Email already taken pls register with other email" })
+    } else { res.redirect("login"); }
+
 });
 
 router.get("/login", (req, res) => {
-    res.render("login");
+    res.render("login", { message: null });
 });
 
-router.post("/login", async(req, res) => {
+router.post("/login", urlencodedParser, async(req, res) => {
     const match = await userController.matchLogin(req.body);
-    if (match) res.send("secsess");
-    else res.render("login");
+    if (match === "connot match email")
+        res.render('login', { message: "connot match email pls register..." })
+    if (match) {
+        const query = querystring.stringify({
+            email: req.body.userEmail,
+            login: true
+        });
+        res.redirect("/dashboard?" + query);
+    } else res.render("login", { message: "connot match password pls write currect one..." });
 });
+
+
+router.get("/logout", (req, res) => {
+    res.redirect('login');
+})
 
 module.exports = router;

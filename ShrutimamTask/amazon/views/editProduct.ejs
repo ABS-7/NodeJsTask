@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h2>User Id:
+        <%= email %>
+    </h2>
+    <br>
+    <h2>Products</h2>
+
+    <table>
+        <% for(let i=0; i < data.length; i++) { %>
+            <tr>
+                <td>
+                    <%= data[i].name %>
+                </td>
+                <td>
+                    <%= data[i].price %>
+                </td>
+                <td>
+                    <form action="/dashboard/editProduct" method="POST">
+                        <input type="hidden" name="productId" value="<%= data[i]._id %>">
+                        <input type="hidden" name="userEmail" value="<%= email %>">
+                        <input type="hidden" name="productName" value="<%= data[i].name %>">
+                        <input type="hidden" name="productPrice" value="<%= data[i].price %>">
+                        <button type="submit">Edit</button>
+                    </form>
+                </td>
+                <td>
+                    <form action="/dashboard/deletetProduct" method="POST">
+                        <input type="hidden" name="productId" value="<%= data[i]._id %>">
+                        <input type="hidden" name="userEmail" value="<%= email %>">
+                        <input type="hidden" name="productName" value="<%= data[i].name %>">
+                        <input type="hidden" name="productPrice" value="<%= data[i].price %>">
+                        <button type="submit">DELETE</button>
+                    </form>
+                </td>
+            </tr>
+            <% } %>
+    </table>
+
+</body>
+
+</html>

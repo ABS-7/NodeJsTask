@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const timestamp = require('mongoose-timestamp-plugin');
+const timestamp = require('mongoose-timestamp');
 
 //const dotenv = require('dotenv');
 
@@ -12,20 +12,10 @@ const purchases = new mongoose.Schema({
         ref: "Products",
         required: true
     },
-    purchasedDate: {
-        type: Date,
-    },
-    totalPrice: {
-        type: Number,
-        required: true
-    },
     purchasedBy: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Users"
-    },
-    purchasedquantity: {
-        type: Number,
-        required: true
+        ref: "Users",
+        require: true
     },
 }, { collection: "Purchases" });
 
