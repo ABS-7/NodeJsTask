@@ -6,6 +6,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        th {
+            border: black solid 1px;
+        }
+    </style>
 </head>
 
 <body>
@@ -16,6 +21,11 @@
     <h2>Products</h2>
 
     <table>
+        <th>name</th>
+        <th>price</th>
+        <th>stock</th>
+        <th>Edit</th>
+        <th>Delete</th>
         <% for(let i=0; i < data.length; i++) { %>
             <tr>
                 <td>
@@ -25,26 +35,38 @@
                     <%= data[i].price %>
                 </td>
                 <td>
+                    <%= data[i].stock %>
+                </td>
+                <td>
                     <form action="/dashboard/editProduct" method="POST">
                         <input type="hidden" name="productId" value="<%= data[i]._id %>">
-                        <input type="hidden" name="userEmail" value="<%= email %>">
+                        <input type="hidden" name="id" value="<%= id %>">
                         <input type="hidden" name="productName" value="<%= data[i].name %>">
                         <input type="hidden" name="productPrice" value="<%= data[i].price %>">
+                        <input type="hidden" name="productStock" value="<%= data[i].stock %>">
                         <button type="submit">Edit</button>
                     </form>
                 </td>
                 <td>
                     <form action="/dashboard/deletetProduct" method="POST">
                         <input type="hidden" name="productId" value="<%= data[i]._id %>">
-                        <input type="hidden" name="userEmail" value="<%= email %>">
+                        <input type="hidden" name="id" value="<%= id %>">
                         <input type="hidden" name="productName" value="<%= data[i].name %>">
                         <input type="hidden" name="productPrice" value="<%= data[i].price %>">
+                        <input type="hidden" name="productStock" value="<%= data[i].stock %>">
                         <button type="submit">DELETE</button>
                     </form>
                 </td>
             </tr>
             <% } %>
     </table>
+
+    <br>
+    <form action="/dashboard" method="GET">
+        <input type="hidden" name="id" value="<%=id%>">
+        <button type="submit">Back</button>
+    </form>
+
 
 </body>
 

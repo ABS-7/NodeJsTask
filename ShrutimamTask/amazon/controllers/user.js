@@ -36,7 +36,30 @@ async function matchLogin(data) {
     }
 }
 
+async function emailToId(email) {
+    try {
+        const userdata = await user.findOne({ email: email });
+        return userdata._id;
+    } catch (error) {
+        console.log(error);
+        return 'error';
+    }
+}
+
+async function idToEmail(id) {
+    try {
+        console.log("idtoemail=>" + id);
+        const userdata = await user.findOne({ _id: id });
+        return userdata.email;
+    } catch (error) {
+        console.log(error);
+        return 'error';
+    }
+}
+
 module.exports = {
     doRegistration: doRegistration,
     matchLogin: matchLogin,
+    emailToId: emailToId,
+    idToEmail: idToEmail
 }

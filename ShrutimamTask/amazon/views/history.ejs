@@ -21,7 +21,9 @@
     <table>
         <tr>
             <th>name</th>
-            <th>price</th>
+            <th>Unit price</th>
+            <th>Quantity</th>
+            <th>total price</th>
             <th>date</th>
         </tr>
         <% for(let i=0; i < data.length; i++) { %>
@@ -33,6 +35,12 @@
                     <%= data[i].productId.price %>
                 </td>
                 <td>
+                    <%= data[i].purchasedQuantity %>
+                </td>
+                <td>
+                    <%= data[i].totalPrice %>
+                </td>
+                <td>
                     <%= data[i].createdAt %>
                 </td>
             </tr>
@@ -40,8 +48,7 @@
     </table>
 
     <form action="/dashboard" method="GET">
-        <input type="hidden" name="email" value="<%=email%>">
-        <input type="hidden" name="login" value=true>
+        <input type="hidden" name="id" value="<%=id%>">
         <button type="submit">Back</button>
     </form>
 </body>

@@ -17,6 +17,14 @@ const purchases = new mongoose.Schema({
         ref: "Users",
         require: true
     },
+    purchasedQuantity: {
+        type: Number,
+        required: true
+    },
+    totalPrice: {
+        type: Number,
+        required: true
+    }
 }, { collection: "Purchases" });
 
 purchases.plugin(timestamp, {

@@ -5,8 +5,6 @@ const querystring = require('querystring');
 
 let router = express.Router();
 
-//const urlencodedParser = router.use(bodyParser.urlencoded({ extended: true }));
-
 const urlencodedParser = bodyParser.urlencoded({ extended: true });
 
 router.use(express.json());
@@ -33,8 +31,10 @@ router.post("/login", urlencodedParser, async(req, res) => {
     if (match === "connot match email")
         res.render('login', { message: "connot match email pls register..." })
     if (match) {
+        const userid = await userController.emailToId(req.body.userEmail);
+        console.log(userid);
         const query = querystring.stringify({
-            email: req.body.userEmail,
+            id: String(userid),
             login: true
         });
         res.redirect("/dashboard?" + query);

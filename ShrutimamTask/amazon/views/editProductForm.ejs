@@ -17,10 +17,21 @@
         <label for="productPrice">Product Price:</label>
         <input type="text" id="productPrice" name="productPrice" value="<%= values.productPrice%>" required>
 
-        <input type="hidden" name="userEmail" value="<%= values.userEmail %>" required>
+        <label for="productPrice">Product Stock:</label>
+        <input type="text" id="productStock" name="productStock" value="<%= values.productStock%>" required>
+
+        <input type="hidden" name="id" value="<%= values.id %>" required>
         <input type="hidden" name="productId" value="<%= values.productId %>" required>
         <button type="submit">SUBMIT</button>
     </form>
+    <br>
+
+    <form action="/dashboard/editProduct" method="GET">
+        <input type="hidden" name="id" value="<%=values.id%>">
+        <button type="submit">Back</button>
+    </form>
+
+
 </body>
 
 </html>

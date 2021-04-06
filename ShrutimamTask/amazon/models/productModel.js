@@ -14,14 +14,14 @@ const products = new mongoose.Schema({
         type: Number,
         required: true
     },
+    stock: {
+        type: Number,
+        required: true
+    },
     addedBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Users",
         required: true
-    },
-    purchased: {
-        type: Boolean,
-        default: false
     },
     active: {
         type: Boolean,

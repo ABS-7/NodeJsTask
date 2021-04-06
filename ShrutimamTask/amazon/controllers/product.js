@@ -4,14 +4,12 @@ const purchase = require("../models/purchaseModel");
 
 async function getProducts() {
     try {
-        //const products = await product.find({ active: true }).populate("addedBy").sort({ "addedBy.email": 1 });
         const products = await product.find({ active: true }).populate({
             path: "addedBy",
             options: {
                 sort: { "name": 1 }
             }
         });
-        //console.log(products);
         return products;
     } catch (error) {
         return "error";
@@ -19,24 +17,14 @@ async function getProducts() {
 }
 
 async function addProduct(data) {
-    let userId;
-    try {
-        console.log(data.userEmail);
-        userId = await user.findOne({ email: data.userEmail }).select({ "_id": 1 });
-        console.log("userId" + userId);
-    } catch (error) {
-        console.log(error);
-        return "error";
-    }
     const validProduct = {
         name: data.productName,
         price: data.productPrice,
-        addedBy: userId._id
+        stock: data.productStock,
+        addedBy: data.id
     }
     try {
-        console.log(validProduct);
         const result = await product.create(validProduct);
-        //console.log(result);
         return result;
     } catch (error) {
         console.log(error);
@@ -45,10 +33,9 @@ async function addProduct(data) {
 }
 
 
-async function getUserProducts(userEmail) {
+async function getUserProducts(userid) {
     try {
-        const userId = await user.findOne({ email: userEmail }).select({ _id: 1 });
-        const userProducts = await product.find({ $and: [{ addedBy: userId._id }, { active: true }] });
+        const userProducts = await product.find({ $and: [{ addedBy: userid }, { active: true }] });
         return userProducts;
     } catch (error) {
         return "error";
@@ -58,7 +45,11 @@ async function getUserProducts(userEmail) {
 async function editProduct(data) {
     console.log(data);
     try {
-        const result = await product.updateOne({ _id: data.productId }, { name: data.productName, price: data.productPrice });
+        const result = await product.updateOne({ _id: data.productId }, {
+            name: data.productName,
+            price: data.productPrice,
+            stock: data.productStock
+        });
         return result;
     } catch (error) {
         console.log(error);
@@ -67,7 +58,6 @@ async function editProduct(data) {
 }
 
 async function deleteProduct(data) {
-    console.log(data);
     try {
         const result = await product.updateOne({ _id: data.productId }, { active: false });
         return result;
@@ -77,30 +67,34 @@ async function deleteProduct(data) {
     }
 }
 async function productPurchase(data) {
-    console.log(data);
     try {
-        const userId = await user.findOne({ email: data.userEmail }).select({ _id: 1 });
-        const userProducts = await product.updateOne({ _id: data.productId }, { active: false, purchased: true });
-        console.log(userId._id + "====>" + data.productId);
-        const result = await purchase.create({ productId: data.productId, purchasedBy: userId._id });
-        return result
+        const userProduct = await product.findOne({ _id: data.productId });
+
+        await product.updateOne({ _id: data.productId }, { stock: userProduct.stock - data.productQuantity });
+
+        const result = await purchase.create({
+            productId: data.productId,
+            purchasedBy: data.id,
+            totalPrice: userProduct.price * data.productQuantity,
+            purchasedQuantity: data.productQuantity
+        });
+
+        return result;
     } catch (error) {
         console.log(error);
         return 'error'
     }
 }
 
-async function getHistory(email) {
+async function getHistory(id) {
     try {
-        const userId = await user.findOne({ email: email }).select({ _id: 1 });
-        const purchases = await purchase.find({ purchasedBy: userId._id }).populate({
+        const purchases = await purchase.find({ purchasedBy: id }).populate({
             path: "productId"
         });
-        console.log(purchases);
         return purchases;
     } catch (error) {
         console.log(error);
-        return 'error';
+        return 'error'
     }
 }
 

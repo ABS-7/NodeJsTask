@@ -26,17 +26,17 @@
         </form>
 
         <form action="/dashboard/addProduct" method="GET">
-            <input type="hidden" name="email" value="<%=email%>">
+            <input type="hidden" name="id" value="<%=id%>">
             <button type="submit">Add</button>
         </form>
 
         <form action="/dashboard/editProduct" method="GET">
-            <input type="hidden" name="email" value="<%=email%>">
+            <input type="hidden" name="id" value="<%=id%>">
             <button type="submit">Edit</button>
         </form>
 
         <form action="/dashboard/history" method="GET">
-            <input type="hidden" name="email" value="<%=email%>">
+            <input type="hidden" name="id" value="<%=id%>">
             <button type="submit">History</button>
         </form>
 
@@ -48,6 +48,7 @@
             <tr>
                 <th>name</th>
                 <th>price</th>
+                <th>stock</th>
                 <th>addedBy</th>
                 <th>BUY</th>
             </tr>
@@ -60,15 +61,23 @@
                         <%= data[i].price %>
                     </td>
                     <td>
+                        <%= data[i].stock %>
+                    </td>
+                    <td>
                         <%= data[i].addedBy.name %>
                     </td>
                     <td>
-                        <form action="/dashboard/purchase" method="POST">
+                        <form action="/dashboard/purchase/form" method="POST">
                             <input type="hidden" name="productId" value="<%= data[i]._id %>">
-                            <input type="hidden" name="userEmail" value="<%= email %>">
+                            <input type="hidden" name="id" value="<%= id %>">
                             <input type="hidden" name="productName" value="<%= data[i].name %>">
                             <input type="hidden" name="productPrice" value="<%= data[i].price %>">
-                            <button type="submit">BUY</button>
+                            <input type="hidden" name="productStock" value="<%= data[i].stock %>">
+                            <% if (data[i].stock == 0) { %>
+                                <button type="submit" disabled>BUY</button>
+                                <%} else { %>
+                                    <button type="submit">BUY</button>
+                                    <% } %>
                         </form>
                     </td>
                 </tr>
