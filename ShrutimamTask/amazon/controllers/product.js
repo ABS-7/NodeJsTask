@@ -4,7 +4,14 @@ const purchase = require("../models/purchaseModel");
 
 async function getProducts() {
     try {
-        const products = await product.find({ active: true });
+        //const products = await product.find({ active: true }).populate("addedBy").sort({ "addedBy.email": 1 });
+        const products = await product.find({ active: true }).populate({
+            path: "addedBy",
+            options: {
+                sort: { "name": 1 }
+            }
+        });
+        //console.log(products);
         return products;
     } catch (error) {
         return "error";
@@ -83,11 +90,26 @@ async function productPurchase(data) {
     }
 }
 
+async function getHistory(email) {
+    try {
+        const userId = await user.findOne({ email: email }).select({ _id: 1 });
+        const purchases = await purchase.find({ purchasedBy: userId._id }).populate({
+            path: "productId"
+        });
+        console.log(purchases);
+        return purchases;
+    } catch (error) {
+        console.log(error);
+        return 'error';
+    }
+}
+
 module.exports = {
     getProducts: getProducts,
     addProduct: addProduct,
     getUserProducts: getUserProducts,
     editProduct: editProduct,
     deleteProduct: deleteProduct,
-    productPurchase: productPurchase
+    productPurchase: productPurchase,
+    getHistory: getHistory
 }

@@ -100,4 +100,17 @@ router.post("/purchase", urlencodedParser, async(req, res) => {
     }
 });
 
+
+router.get("/history", async(req, res) => {
+    const purcheses = await productController.getHistory(req.query.email);
+    if (purcheses == []) {
+
+    } else {
+        console.log("in else");
+        console.log("purcheses ==> ", purcheses);
+        res.render("history", { email: req.query.email, data: purcheses });
+    }
+
+});
+
 module.exports = router;

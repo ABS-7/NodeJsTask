@@ -11,6 +11,10 @@
             display: inline-block;
             margin-right: 100px;
         }
+        
+        th {
+            border: black solid 1px;
+        }
     </style>
 </head>
 
@@ -31,10 +35,22 @@
             <button type="submit">Edit</button>
         </form>
 
+        <form action="/dashboard/history" method="GET">
+            <input type="hidden" name="email" value="<%=email%>">
+            <button type="submit">History</button>
+        </form>
+
+
         <hr>
         <h1>Welcome in dashboard</h1>
 
         <table>
+            <tr>
+                <th>name</th>
+                <th>price</th>
+                <th>addedBy</th>
+                <th>BUY</th>
+            </tr>
             <% for(let i=0; i < data.length; i++) { %>
                 <tr>
                     <td>
@@ -42,6 +58,9 @@
                     </td>
                     <td>
                         <%= data[i].price %>
+                    </td>
+                    <td>
+                        <%= data[i].addedBy.name %>
                     </td>
                     <td>
                         <form action="/dashboard/purchase" method="POST">
