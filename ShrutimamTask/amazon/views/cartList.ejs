@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <% if (msg) { %>
+        <h3>
+            <%= msg %>
+        </h3>
+        <% } %>
+
+            <table>
+                <tr>
+                    <th>name</th>
+                    <th>price</th>
+                    <th>cartQty</th>
+                    <th>total</th>
+                    <th>BUY</th>
+                </tr>
+                <% for(let i=0; i < data.cart.length; i++) { %>
+                    <tr>
+                        <td>
+                            <%= data.cart[i].productName %>
+                        </td>
+                        <td>
+                            <%= data.cart[i].productPrice %>
+                        </td>
+                        <td>
+                            <%= data.cart[i].cartQty %>
+                        </td>
+                        <td>
+                            <%= data.cart[i].totalPrice %>
+                        </td>
+                        <td>
+                            <form action="/dashboard/cart/purchase" method="POST">
+                                <input type="hidden" name="cartId" value="<%= data.cart[i]._id %>">
+                                <input type="hidden" name="productId" value="<%= data.cart[i].productId %>">
+                                <input type="hidden" name="id" value="<%= id %>">
+                                <input type="hidden" name="productName" value="<%= data.cart[i].productName %>">
+                                <input type="hidden" name="productPrice" value="<%= data.cart[i].productPrice %>">
+                                <input type="hidden" name="totalPrice" value="<%= data.cart[i].totalPrice %>">
+                                <input type="hidden" name="cartQty" value="<%= data.cart[i].cartQty %>">
+                                <button type="submit">BUY</button>
+                            </form>
+                        </td>
+                        <td>
+                            <form action="/dashboard/cart/editCartForm" method="POST">
+                                <input type="hidden" name="cartId" value="<%= data.cart[i]._id %>">
+                                <input type="hidden" name="productId" value="<%= data.cart[i].productId %>">
+                                <input type="hidden" name="id" value="<%= id %>">
+                                <input type="hidden" name="productName" value="<%= data.cart[i].productName %>">
+                                <input type="hidden" name="productPrice" value="<%= data.cart[i].productPrice %>">
+                                <input type="hidden" name="totalPrice" value="<%= data.cart[i].totalPrice %>">
+                                <input type="hidden" name="cartQty" value="<%= data.cart[i].cartQty %>">
+                                <button type="submit">EDIT</button>
+                            </form>
+                        </td>
+                        <td>
+                            <form action="/dashboard/cart/deleteCart" method="POST">
+                                <input type="hidden" name="cartId" value="<%= data.cart[i]._id %>">
+                                <input type="hidden" name="productId" value="<%= data.cart[i].productId %>">
+                                <input type="hidden" name="id" value="<%= id %>">
+                                <input type="hidden" name="productName" value="<%= data.cart[i].productName %>">
+                                <input type="hidden" name="productPrice" value="<%= data.cart[i].productPrice %>">
+                                <input type="hidden" name="totalPrice" value="<%= data.cart[i].totalPrice %>">
+                                <input type="hidden" name="cartQty" value="<%= data.cart[i].cartQty %>">
+                                <button type="submit">DELETE</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <% } %>
+            </table>
+
+            <form action="/dashboard" method="GET">
+                <input type="hidden" name="id" value="<%=id%>">
+                <button type="submit">Back</button>
+            </form>
+
+
+            <form action="/dashboard/cart/buyAll" method="POST">
+                <input type="hidden" name="id" value="<%=id%>">
+                <!-- <input type="hidden" name="data" value="<%=data%>"> -->
+                <button type="submit">BuyAll</button>
+            </form>
+
+
+
+</body>
+
+</html>

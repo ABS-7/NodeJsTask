@@ -1,6 +1,6 @@
 const product = require("../models/productModel");
-const user = require("../models/userModel");
 const purchase = require("../models/purchaseModel");
+const fs = require("fs");
 
 async function getProducts() {
     try {
@@ -16,12 +16,21 @@ async function getProducts() {
     }
 }
 
-async function addProduct(data) {
+async function addProduct(data, file) {
+
+    //const base64Data = fs.readFileSync(file.path).toString('base64');
+    const ex = file.originalname.substr(file.originalname.lastIndexOf('.'));
+    console.log(data.datestemp);
     const validProduct = {
         name: data.productName,
         price: data.productPrice,
         stock: data.productStock,
-        addedBy: data.id
+        addedBy: data.id,
+        img: {
+            filename: data.productName + '-' + data.datestemp + ex,
+            contentType: ex,
+            imgBase64: 'C:/Other/viitor cloud/taskOfNodeJS/ShrutimamTask/amazon/uploads/productImg/' + data.productName + '-' + data.datestemp + ex,
+        }
     }
     try {
         const result = await product.create(validProduct);
@@ -42,13 +51,20 @@ async function getUserProducts(userid) {
     }
 }
 
-async function editProduct(data) {
+async function editProduct(data, file) {
     console.log(data);
     try {
+        const base64Data = fs.readFileSync(file.path).toString('base64');
+
         const result = await product.updateOne({ _id: data.productId }, {
             name: data.productName,
             price: data.productPrice,
-            stock: data.productStock
+            stock: data.productStock,
+            img: {
+                filename: file.filename,
+                contentType: file.mimetype,
+                imgBase64: base64Data
+            }
         });
         return result;
     } catch (error) {

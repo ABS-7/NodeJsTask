@@ -4,20 +4,25 @@ const productController = require("../controllers/product");
 const userController = require("../controllers/user");
 const bodyParser = require('body-parser');
 const querystring = require('querystring');
-const { query } = require("express");
+const store = require("../middleware/multer");
+const cart = require("../routes/cartRouts");
+const user = require("../controllers/user");
 
 const router = express.Router();
 const urlencodedParser = bodyParser.urlencoded({ extended: true });
 
 router.use(express.json());
 
+router.use('/cart', cart);
+
 router.get('/', async(req, res) => {
     if (req.query.id == undefined) {
         res.redirect("/user/login");
     }
     const data = await productController.getProducts();
+    const img = await userController.fetchUserImg(req.query.id);
     const email = await userController.idToEmail(req.query.id);
-    res.render("dashboard", { data: data, email: email, id: req.query.id });
+    res.render("dashboard", { data: data, email: email, id: req.query.id, msg: req.query.msg, userImg: 'userImg/' + img.filename });
 });
 
 
@@ -29,8 +34,8 @@ router.get('/addProduct', async(req, res) => {
     }
 });
 
-router.post('/addProduct', urlencodedParser, async(req, res) => {
-    const result = await productController.addProduct(req.body);
+router.post('/addProduct', store.ProductStore.single("productImg"), async(req, res) => {
+    const result = await productController.addProduct(req.body, req.file);
     if (result === "error") {
         const query = querystring.stringify({
             email: req.body.userEmail,
@@ -62,8 +67,8 @@ router.post("/editProduct", urlencodedParser, (req, res) => {
     res.render("editProductForm", { values: req.body });
 });
 
-router.post("/editProduct/form", urlencodedParser, async(req, res) => {
-    const result = await productController.editProduct(req.body);
+router.post("/editProduct/form", store.ProductStore.single("productImg"), async(req, res) => {
+    const result = await productController.editProduct(req.body, req.file);
     if (result != "error") {
         const query = querystring.stringify({
             id: req.body.id

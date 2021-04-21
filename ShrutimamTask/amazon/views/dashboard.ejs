@@ -20,6 +20,7 @@
 
 <body>
 
+    <img src="<%=userImg%>" height="50" width="50" alt="" srcset="">
     <%=email%>
         <form action="/user/logout" method="GET">
             <button type="submit">Logout</button>
@@ -40,6 +41,10 @@
             <button type="submit">History</button>
         </form>
 
+        <form action="/dashboard/cart/cartlist" method="GET">
+            <input type="hidden" name="id" value="<%=id%>">
+            <button type="submit">CART list</button>
+        </form>
 
         <hr>
         <h1>Welcome in dashboard</h1>
@@ -50,6 +55,7 @@
                 <th>price</th>
                 <th>stock</th>
                 <th>addedBy</th>
+                <th>img</th>
                 <th>BUY</th>
             </tr>
             <% for(let i=0; i < data.length; i++) { %>
@@ -67,6 +73,9 @@
                         <%= data[i].addedBy.name %>
                     </td>
                     <td>
+                        <img src="productImg/<%=data[i].img.filename%>" height="50" width="50">
+                    </td>
+                    <td>
                         <form action="/dashboard/purchase/form" method="POST">
                             <input type="hidden" name="productId" value="<%= data[i]._id %>">
                             <input type="hidden" name="id" value="<%= id %>">
@@ -78,6 +87,16 @@
                                 <%} else { %>
                                     <button type="submit">BUY</button>
                                     <% } %>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="/dashboard/cart" method="POST">
+                            <input type="hidden" name="productId" value="<%= data[i]._id %>">
+                            <input type="hidden" name="id" value="<%= id %>">
+                            <input type="hidden" name="productName" value="<%= data[i].name %>">
+                            <input type="hidden" name="productPrice" value="<%= data[i].price %>">
+                            <input type="hidden" name="productStock" value="<%= data[i].stock %>">
+                            <button type="submit">CART</button>
                         </form>
                     </td>
                 </tr>

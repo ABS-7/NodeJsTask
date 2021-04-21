@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <form>
+
+        <label for="userName">Name:</label>
+        <input type="text" id="userName" name="userName" required>
+
+        <label for="userEmail">Email:</label>
+        <input type="text" id="userEmail" name="userEmail" required>
+
+        <label for="userPassword">Password:</label>
+        <input type="text" id="userPassword" name="userPassword" required>
+
+        <label for="userImg">Avatar:</label>
+        <input type="file" id="userImg" name="userImg">
+
+    </form>
+    <button onclick="submit()">Register</button>
+
+
+    <img id="output" />
+
+    <a href="/user/login">Login</a>
+    <script>
+        function submit() {
+            let inputs = document.getElementsByTagName("input");
+            let data;
+
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                data = evt.target.result.split(",")[1];
+                let obj = {
+                    userName: inputs[0].value,
+                    userEmail: inputs[1].value,
+                    userPassword: inputs[2].value,
+                    //userImg: inputs[3].files[0],
+                    data: data
+                }
+                console.log(obj);
+
+
+                var myHeaders = new Headers();
+                myHeaders.append("Content-Type", "application/json");
+
+                var raw = JSON.stringify(obj);
+
+                var requestOptions = {
+                    method: 'POST',
+                    headers: myHeaders,
+                    body: raw,
+                    redirect: 'follow',
+                    mode: 'cors'
+                };
+
+                fetch("http://localhost:3333/user/registration2", requestOptions)
+                    .then(response => response.text())
+                    .then(result => window.location.replace("http://localhost:3333/user/login"))
+                    .catch(error => console.log('error', error));
+            };
+            reader.readAsDataURL(inputs[3].files[0]);
+
+
+
+
+
+
+
+        }
+    </script>
+</body>
+
+</html>

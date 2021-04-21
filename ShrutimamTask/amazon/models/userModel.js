@@ -18,6 +18,15 @@ const users = new mongoose.Schema({
         type: String,
         required: true
     },
+    img: {
+        filename: String,
+        contentType: String,
+        imgBase64: String
+    },
+    cart: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Carts",
+    }],
     active: {
         type: Boolean,
         default: true

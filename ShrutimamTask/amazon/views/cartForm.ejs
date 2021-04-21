@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <form action="/dashboard/cart/addcart" method="POST">
+        <label for="productName">Product Name:</label>
+        <input type="text" id="productName" name="productName" value="<%=productName%>" disabled>
+
+        <label for="productPrice">Product Price:</label>
+        <input type="text" id="productPrice" name="productPrice" value="<%=productPrice%>" disabled>
+
+        <label for="productQuantity">Product Quantity:</label>
+        <input type="number" id="productQuantity" name="productQuantity" min="1" value="1" required>
+
+
+        <input type="hidden" id="productPrice" name="productPrice" value="<%=productPrice%>">
+        <input type="hidden" id="productName" name="productName" value="<%=productName%>">
+        <input type="hidden" name="id" value="<%=id %>">
+        <input type="hidden" name="productId" value="<%=productId %>">
+        <button type="submit">SUBMIT</button>
+    </form>
+    <br>
+
+    <form action="/dashboard" method="GET">
+        <input type="hidden" name="id" value="<%=id%>">
+        <button type="submit">Back</button>
+    </form>
+</body>
+
+</html>

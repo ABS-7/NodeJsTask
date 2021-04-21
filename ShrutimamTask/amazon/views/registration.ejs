@@ -19,7 +19,7 @@
             <br>
             <br>
 
-            <form action="/user/registration" method="POST">
+            <form action="/user/registration" method="POST" enctype="multipart/form-data">
 
                 <label for="userName">Name:</label>
                 <input type="text" id="userName" name="userName" required>
@@ -30,7 +30,11 @@
                 <label for="userPassword">Password:</label>
                 <input type="text" id="userPassword" name="userPassword" required>
 
-                <button type="submit" class="registerbtn">Register</button>
+                <label for="userImg">Avatar:</label>
+                <input type="file" id="userImg" name="userImg">
+
+
+                <button type="submit">Register</button>
 
             </form>
 

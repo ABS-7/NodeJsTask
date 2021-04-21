@@ -15,7 +15,7 @@
         </h2>
         <% } %>
 
-            <form action="/dashboard/addProduct" method="POST">
+            <form action="/dashboard/addProduct" method="POST" enctype="multipart/form-data">
                 <label for="productName">Name:</label>
                 <input type="text" id="productName" name="productName" required>
 
@@ -24,6 +24,9 @@
 
                 <label for="productStock">Stock:</label>
                 <input type="text" id="productStock" name="productStock" required>
+
+                <label for="productImg">IMG:</label>
+                <input type="file" id="productImg" name="productImg">
 
                 <input type="hidden" name="id" value="<%= id %>" required>
 

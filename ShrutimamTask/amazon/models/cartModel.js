@@ -4,42 +4,41 @@ const timestamp = require('mongoose-timestamp');
 
 //dotenv.config();
 
-const products = new mongoose.Schema({
+const carts = new mongoose.Schema({
 
-    name: {
-        type: String,
-        required: true,
-    },
-    price: {
-        type: Number,
-        required: true
-    },
-    stock: {
-        type: Number,
-        required: true
-    },
-    addedBy: {
+    productId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Users",
+        ref: "Products",
         required: true
     },
-    img: {
-        filename: String,
-        contentType: String,
-        imgBase64: String
+    productName: {
+        type: String,
+        required: true
+    },
+    productPrice: {
+        type: Number,
+        required: true
+    },
+    cartQty: {
+        type: Number,
+        required: true
+    },
+    totalPrice: {
+        type: Number,
+        required: true
     },
     active: {
         type: Boolean,
         default: true
     }
-}, { collection: "Products" });
+}, { collection: "Carts" });
 
 
-products.plugin(timestamp, {
+carts.plugin(timestamp, {
     disableCreated: false, // Disables the logging of the creation date
     disableUpdated: false // Disabled the loggin of the modification date
 });
 
-const productModel = new mongoose.model("Products", products);
+const cartModel = new mongoose.model("Carts", carts);
 
-module.exports = productModel;
+module.exports = cartModel;

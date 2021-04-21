@@ -10,7 +10,7 @@
 
 <body>
 
-    <form action="/dashboard/editProduct/form" method="POST">
+    <form action="/dashboard/editProduct/form" method="POST" enctype="multipart/form-data">
         <label for="productName">Product Name:</label>
         <input type="text" id="productName" name="productName" value="<%= values.productName%>" required>
 
@@ -19,6 +19,9 @@
 
         <label for="productPrice">Product Stock:</label>
         <input type="text" id="productStock" name="productStock" value="<%= values.productStock%>" required>
+
+        <label for="productImg">IMG:</label>
+        <input type="file" id="productImg" name="productImg">
 
         <input type="hidden" name="id" value="<%= values.id %>" required>
         <input type="hidden" name="productId" value="<%= values.productId %>" required>
