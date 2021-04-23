@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const userController = require("../controllers/user");
 const querystring = require('querystring');
 const store = require("../middleware/multer");
-
+const jwt = require('jsonwebtoken');
 
 let router = express.Router();
 
@@ -14,6 +14,8 @@ router.use(express.json({ limit: "500kb" }));
 router.get("/registration", (req, res) => {
     res.render("registration", { message: null });
 });
+
+
 
 router.post("/registration", store.UserStore.single("userImg"), async(req, res) => {
 
@@ -57,7 +59,8 @@ router.post("/login", urlencodedParser, async(req, res) => {
             id: String(userid),
             login: true
         });
-        res.redirect("/dashboard?" + query);
+        //res.redirect("/dashboard?" + query);  //old
+        res.redirect('token?' + query);
     } else res.render("login", { message: "connot match password pls write currect one..." });
 });
 
@@ -65,5 +68,23 @@ router.post("/login", urlencodedParser, async(req, res) => {
 router.get("/logout", (req, res) => {
     res.redirect('login');
 })
+
+router.get("/token", async(req, res) => {
+    //console.log("in token");
+    console.log(req.query.id);
+   
+    
+    const limit = process.env.TOKEN_LIMIT;
+    const key = process.env.JWT_KEY;
+    //console.log(typeof key);
+    //console.log(typeof (limit));
+    let payload = {
+        _id: req.query.id,
+        exp: Math.floor(Date.now() / 1000)+ parseInt(limit),
+    };
+    const token = jwt.sign(payload,key);
+    res.status(201).send({token: token});
+});
+
 
 module.exports = router;

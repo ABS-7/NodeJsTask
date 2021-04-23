@@ -7,11 +7,13 @@ const querystring = require('querystring');
 const store = require("../middleware/multer");
 const cart = require("../routes/cartRouts");
 const user = require("../controllers/user");
+const auth = require("../middleware/auth");
 
 const router = express.Router();
 const urlencodedParser = bodyParser.urlencoded({ extended: true });
 
 router.use(express.json());
+router.use(auth.jwtAuth);
 
 router.use('/cart', cart);
 
