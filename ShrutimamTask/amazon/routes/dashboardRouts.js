@@ -8,6 +8,7 @@ const store = require("../middleware/multer");
 const cart = require("../routes/cartRouts");
 const user = require("../controllers/user");
 const auth = require("../middleware/auth");
+const joi = require("../middleware/validation");
 
 const router = express.Router();
 const urlencodedParser = bodyParser.urlencoded({ extended: true });
@@ -17,7 +18,7 @@ router.use(auth.jwtAuth);
 
 router.use('/cart', cart);
 
-router.get('/', async(req, res) => {
+router.get('/', auth.jwtAuth, async (req, res) => {
     if (req.query.id == undefined) {
         res.redirect("/user/login");
     }
@@ -28,7 +29,7 @@ router.get('/', async(req, res) => {
 });
 
 
-router.get('/addProduct', async(req, res) => {
+router.get('/addProduct', auth.jwtAuth, async (req, res) => {
     if (req.query.message) {
         res.render("addProduct", { message: req.query.message, id: req.query.id });
     } else {
@@ -36,7 +37,7 @@ router.get('/addProduct', async(req, res) => {
     }
 });
 
-router.post('/addProduct', store.ProductStore.single("productImg"), async(req, res) => {
+router.post('/addProduct', auth.jwtAuth, store.ProductStore.single("productImg"), joi.productValidation, async (req, res) => {
     const result = await productController.addProduct(req.body, req.file);
     if (result === "error") {
         const query = querystring.stringify({
@@ -52,7 +53,7 @@ router.post('/addProduct', store.ProductStore.single("productImg"), async(req, r
     }
 });
 
-router.get('/editProduct', async(req, res) => {
+router.get('/editProduct', auth.jwtAuth, async (req, res) => {
     const userProducts = await productController.getUserProducts(req.query.id);
     if (userProducts.length == 0) {
         const query = querystring.stringify({
@@ -65,11 +66,11 @@ router.get('/editProduct', async(req, res) => {
         res.render("editProduct", { data: userProducts, id: req.query.id, email: email });
     }
 });
-router.post("/editProduct", urlencodedParser, (req, res) => {
+router.post("/editProduct", urlencodedParser, auth.jwtAuth, (req, res) => {
     res.render("editProductForm", { values: req.body });
 });
 
-router.post("/editProduct/form", store.ProductStore.single("productImg"), async(req, res) => {
+router.post("/editProduct/form", auth.jwtAuth, store.ProductStore.single("productImg"), joi.productValidation, async (req, res) => {
     const result = await productController.editProduct(req.body, req.file);
     if (result != "error") {
         const query = querystring.stringify({
@@ -79,7 +80,7 @@ router.post("/editProduct/form", store.ProductStore.single("productImg"), async(
     }
 });
 
-router.post("/deletetProduct", urlencodedParser, async(req, res) => {
+router.post("/deletetProduct", urlencodedParser, auth.jwtAuth, async (req, res) => {
     const result = await productController.deleteProduct(req.body);
     if (result != "error") {
         const query = querystring.stringify({
@@ -89,11 +90,11 @@ router.post("/deletetProduct", urlencodedParser, async(req, res) => {
     }
 });
 
-router.post("/purchase/form", urlencodedParser, async(req, res) => {
+router.post("/purchase/form", urlencodedParser, auth.jwtAuth, async (req, res) => {
     res.render("purchase", req.body);
 });
 
-router.post("/purchase", urlencodedParser, async(req, res) => {
+router.post("/purchase", urlencodedParser, auth.jwtAuth, async (req, res) => {
     const result = await productController.productPurchase(req.body);
     if (result != "error") {
         const query = querystring.stringify({
@@ -104,7 +105,7 @@ router.post("/purchase", urlencodedParser, async(req, res) => {
 });
 
 
-router.get("/history", async(req, res) => {
+router.get("/history", auth.jwtAuth, async (req, res) => {
     const purcheses = await productController.getHistory(req.query.id);
     res.render("history", { id: req.query.id, data: purcheses });
 });
